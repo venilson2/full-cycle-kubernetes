@@ -1,0 +1,19 @@
+apiVersion: apps/v1   #start config replicaset
+kind: ReplicaSet
+metadata:
+  name: nodeserver
+  labels:
+    app: nodeserver   
+spec:                            
+  selector:
+    matchLabels:
+      app: nodeserver
+  replicas: 2         #end config replicaset
+  template:
+    metadata:         #specification of the pod as replicaset template
+      labels:
+        app: "nodeserver"
+    spec:
+      containers:
+        - name: "nodeserver"
+          image: "venilson/hello-node"
