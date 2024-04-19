@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nodeserver-service
+spec:
+  selector: # responsavel por filtrar todos os pods incorporados nesse serviço
+    app: nodeserver # pegar todos os pods que possua o matchLabels que é o app: nodeserver
+  type: LoadBalancer #por padrão possuimos 4 tipos de services que são: ClusterIp, NodePort, LoadBalancer e ExternalName
+  ports:
+  - name: http
+    targetPort: 3000
+    port: 80
+    protocol: TCP

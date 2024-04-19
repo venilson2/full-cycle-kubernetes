@@ -1,0 +1,34 @@
+apiVersion: apps/v1  
+kind: Deployment
+metadata:
+  name: nodeserver
+  labels:
+    app: nodeserver   
+spec:                            
+  selector:
+    matchLabels:
+      app: nodeserver
+  replicas: 2         
+  template:
+    metadata:         
+      labels:
+        app: "nodeserver"
+    spec:
+      containers:
+        - name: "nodeserver"
+          image: "venilson/hello-node:latest"
+        livenessProbe: # Verifica se o contêiner está saudável acessando o endpoint /healthz via HTTP
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5 # Tempo inicial de espera antes da primeira verificação da sonda
+          failureThreshold: 3 # Número de falhas consecutivas permitidas antes de considerar o contêiner como não saudável
+          timeoutSeconds: 1  # Tempo máximo permitido para a sonda esperar por uma resposta antes de considerar a verificação como falha
+          durationSeconds: 10 # Duração total da sonda, após a qual a verificação é considerada completa
+        readinessProbe: # Configura uma sonda de prontidão para verificar se o contêiner está pronto para receber tráfego de rede
+          httpGet: # Define que a sonda verificará o endpoint /healthz via HTTP
+            path: /healthz
+            port: 8080
+          periodSeconds: 3 # Intervalo entre verificações periódicas de prontidão em segundos
+          failureThreshold: 3 # Número de falhas consecutivas permitidas antes de considerar o contêiner como não pronto
+          initialDelaySeconds: 5 # Tempo inicial de espera antes da primeira verificação de prontidão

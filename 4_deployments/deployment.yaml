@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: "nodeserver"
-          image: "venilson/hello-node"
+          image: "venilson/hello-node:latest"
